@@ -1,6 +1,7 @@
 ﻿// Authors: Jakob Blosil, Ethan Hoopes, Oluchi Ochulo, Grace Ogden
 // Description: tic tac toe game
 using System;
+using System.Xml.Serialization;
 using mission4_tictactoe;
 
 public partial class Program
@@ -9,15 +10,19 @@ public partial class Program
 
     static void Main(string[] args)
     {
+        //welcome user to the game
         Console.WriteLine("Welcome to Tic-Tac-Toe!");
 
         //initialize tracker for number of moves
         int totalMoves = 0;
 
+        //gameplay loop iterating for 9 turns 
         for (int i = 0; i <= 8; i++)
         {
+
             Game.DisplayTicTacToeBoard(board);
 
+            //alternate between player 1 and player 2
             if (i % 2 == 0)
             {
                 Console.WriteLine("Player 1, where would you like to go?");
@@ -27,20 +32,36 @@ public partial class Program
                 Console.WriteLine("Player 2, where would you like to go?");
             }
 
-            int choice = int.Parse(Console.ReadLine()) - 1;
+            int choice = -1;
+            bool validInput = false;
+            while(!validInput)
+            {
+                if (int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= 9)
+                {
+                    // adjust for zero based indexing
+                    choice -= 1;
 
-            //check if spot is already taken
-            if (board[choice] != 'X' && board[choice] != 'O')
-            {
-                board[choice] = (i % 2 == 0) ? 'X' : 'O';
-                totalMoves++; //incrememnt if valid move was made
+                    //check if spot is already taken
+                    if (board[choice] != 'X' && board[choice] != 'O')
+                    {
+                        validInput = true;
+                        board[choice] = (i % 2 == 0) ? 'X' : 'O';
+                        totalMoves++; //incrememnt if valid move was made
+                    }
+                    else
+                    {
+                        Console.WriteLine("This spot is already taken.Please choose another spot.");
+                    }
+                    
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a number between 1 and 9");
+                }
             }
-            else
-            {
-                Console.WriteLine("This spot is already taken.Please choose another spot.");
-                i--; //decrement to redo the player's turn
-                continue;
-            }
+
+
+
 
             string result = Game.CheckWinner(board);
             if(result != "No winner")
@@ -52,12 +73,7 @@ public partial class Program
                 //exit loop if theres a winner
                 break; 
             }
-            
-            if (totalMoves == 9 && result == "No winner") 
-            {
-                Console.WriteLine("The game is a draw!");
-                break;
-            }
         }
+
     }
 }

@@ -65,7 +65,7 @@ namespace mission4_tictactoe
                     break;
                 }
             }
-            return isBoardFull ? "Draw" : "No winner"; 
+            return isBoardFull ? "It's a tie!" : "No winner"; 
         }
     }
 }
