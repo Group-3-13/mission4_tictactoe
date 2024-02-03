@@ -17,12 +17,20 @@ namespace mission4_tictactoe
         {
 
             Console.WriteLine("Tic Tac Toe Board:");
-            Console.WriteLine(" {0} | {1} | {2} ", board[0], board[1], board[2]);
-            Console.WriteLine("---+---+---");
-            Console.WriteLine(" {3} | {4} | {5} ", board[3], board[4], board[5]);
-            Console.WriteLine("---+---+---");
-            Console.WriteLine(" {6} | {7} | {8} ", board[6], board[7], board[8]);
+            Console.WriteLine( board[0] + " | " + board[1] + " | " + board[2]);
+            Console.WriteLine("-----------");
+            Console.WriteLine( board[3] + " | " + board[4] + " | " + board[5]);
+            Console.WriteLine("-----------");
+            Console.WriteLine(board[6] + " | " + board[7] + " | " + board[8]);
+
+            if (board.Length != 9)
+            {
+                Console.WriteLine("Error: Board does not contain 9 elements.");
+                return;
+            }
         }
+
+
         // Contain a method that receives the game board array as input
         // and returns if there is a winner and who it was
         public static string CheckWinner(char[] board)

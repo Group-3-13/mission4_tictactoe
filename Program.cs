@@ -1,63 +1,63 @@
 ﻿// Authors: Jakob Blosil, Ethan Hoopes, Oluchi Ochulo, Grace Ogden
 // Description: tic tac toe game
+using System;
+using mission4_tictactoe;
 
-
-// Welcome the user to the game
-Console.WriteLine("Welcome to Tic-Tac-Toe!");
-
-class Program
+public partial class Program
 {
-    // Create a game board array to store the players’ choices
-    static char[] board = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    
+    static char[] board = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
     static void Main(string[] args)
     {
-        int choice;
-        // Call the function to display the Tic Tac Toe board
-        DisplayTicTacToeBoard();
+        Console.WriteLine("Welcome to Tic-Tac-Toe!");
 
-        // Ask each player in turn for their choice and update the game board array
+        //initialize tracker for number of moves
+        int totalMoves = 0;
+
         for (int i = 0; i <= 8; i++)
         {
+            Game.DisplayTicTacToeBoard(board);
+
             if (i % 2 == 0)
             {
                 Console.WriteLine("Player 1, where would you like to go?");
-                choice = int.Parse(Console.ReadLine()) - 1;
-                board[choice] = 'X';
             }
             else
             {
                 Console.WriteLine("Player 2, where would you like to go?");
-                choice = int.Parse(Console.ReadLine()) - 1;
-                board[choice] = 'O';
             }
-                
+
+            int choice = int.Parse(Console.ReadLine()) - 1;
+
+            //check if spot is already taken
+            if (board[choice] != 'X' && board[choice] != 'O')
+            {
+                board[choice] = (i % 2 == 0) ? 'X' : 'O';
+                totalMoves++; //incrememnt if valid move was made
+            }
+            else
+            {
+                Console.WriteLine("This spot is already taken.Please choose another spot.");
+                i--; //decrement to redo the player's turn
+                continue;
+            }
+
+            string result = Game.CheckWinner(board);
+            if(result != "No winner")
+            {
+                //display final board 
+                Game.DisplayTicTacToeBoard(board);
+                //display results
+                Console.WriteLine(result);
+                //exit loop if theres a winner
+                break; 
+            }
+            
+            if (totalMoves == 9 && result == "No winner") 
+            {
+                Console.WriteLine("The game is a draw!");
+                break;
+            }
         }
     }
-
-    
-    // this might belong in the game class
-    static void DisplayTicTacToeBoard()
-    {
-        
-        Console.WriteLine("Tic Tac Toe Board:");
-        Console.WriteLine(" {0} | {1} | {2} ", board[0], board[1], board[2]);
-        Console.WriteLine("---+---+---");
-        Console.WriteLine(" {3} | {4} | {5} ", board[3], board[4], board[5]);
-        Console.WriteLine("---+---+---");
-        Console.WriteLine(" {6} | {7} | {8} ", board[6], board[7], board[8]);
-    }
 }
-
-
-
-
-
-// Print the board by calling the method in the supporting class
-
-// Check for a winner by calling the method in the supporting class,
-// and notify the players when a win has occurred and which player won the game
-
-// winning combos:
-// [1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,8,7]
- 
